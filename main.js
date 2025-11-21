@@ -2616,7 +2616,7 @@ ipcMain.handle('delete-project-files', async (event, projectPath) => {
 // Save recent projects
 ipcMain.handle('save-recent-projects', async (event, projects) => {
   try {
-    const recentPath = path.join(app.getPath('userData'), 'recent.json');
+    const recentPath = path.join(app.getPath('userData'), 'recent-projects.json');
     await fs.writeFile(recentPath, JSON.stringify(projects, null, 2));
     return { success: true };
   } catch (error) {

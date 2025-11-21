@@ -2480,41 +2480,68 @@ async function loadRecentProjects() {
     const path = require('path');
     let projects = await ipcRenderer.invoke('get-recent-projects');
 
-    // Normalize and filter projects
+    console.log('📦 Raw projects from storage:', projects.length);
+
+    // Normalize and filter projects with aggressive deduplication
     const seenPaths = new Set();
     const validProjects = [];
 
     for (const project of projects) {
-        if (!project || !project.path) continue;
+        if (!project || !project.path) {
+            console.log('⚠️ Skipping invalid project:', project);
+            continue;
+        }
 
-        // Normalize path (resolve, remove trailing slashes, etc.)
-        const normalizedPath = path.normalize(project.path).toLowerCase();
+        // Super aggressive path normalization
+        let normalizedPath = path.resolve(project.path);
+        normalizedPath = normalizedPath.toLowerCase();
+        normalizedPath = normalizedPath.replace(/\\/g, '/');
+        normalizedPath = normalizedPath.replace(/\/$/, '');
 
         // Check if path exists
         try {
             fs.accessSync(project.path);
 
-            // Check for duplicates using normalized path
-            if (!seenPaths.has(normalizedPath)) {
-                seenPaths.add(normalizedPath);
-                validProjects.push({
-                    ...project,
-                    lastAccessed: project.lastAccessed || Date.now()
-                });
+            // Check for duplicates
+            if (seenPaths.has(normalizedPath)) {
+                console.log('🔄 Duplicate detected:', project.name, normalizedPath);
+                continue;
             }
+
+            seenPaths.add(normalizedPath);
+            validProjects.push({
+                ...project,
+                lastAccessed: project.lastAccessed || Date.now()
+            });
+            console.log('✅ Added:', project.name);
+
         } catch (error) {
-            // Path doesn't exist, skip it
-            console.log(`Skipping deleted project: ${project.path}`);
+            console.log(`❌ Skipping deleted project: ${project.path}`);
         }
     }
+
+    console.log('📊 Valid projects:', validProjects.length, 'Removed:', projects.length - validProjects.length);
 
     // Sort by last accessed (most recent first)
     validProjects.sort((a, b) => (b.lastAccessed || 0) - (a.lastAccessed || 0));
 
-    // Update stored projects if we filtered any out or order changed
-    if (validProjects.length !== projects.length ||
-        JSON.stringify(validProjects) !== JSON.stringify(projects)) {
-        await ipcRenderer.invoke('save-recent-projects', validProjects);
+    // Always save the cleaned list to persist deduplication
+    console.log('💾 Saving cleaned projects list...');
+    console.log('Projects to save:', validProjects.map(p => ({ name: p.name, path: p.path })));
+
+    // Save using IPC (now fixed to use correct file)
+    await ipcRenderer.invoke('save-recent-projects', validProjects);
+
+    // Verify the save by reading it back
+    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+    const verifyProjects = await ipcRenderer.invoke('get-recent-projects');
+    console.log('🔍 Verification - Projects after save:', verifyProjects.length);
+    console.log('Verified projects:', verifyProjects.map(p => ({ name: p.name, path: p.path })));
+
+    if (verifyProjects.length !== validProjects.length) {
+        console.error('⚠️ WARNING: Save verification mismatch! Expected', validProjects.length, 'but got', verifyProjects.length);
+    } else {
+        console.log('✅ Save verified successfully - duplicates removed permanently');
     }
 
     recentProjects = validProjects;
@@ -2816,12 +2843,33 @@ async function updateProjectAccessTime(projectPath) {
 // Add project to recent (avoiding duplicates)
 async function addToRecentProjects(project) {
     const path = require('path');
-    const normalizedPath = path.normalize(project.path).toLowerCase();
 
-    // Remove any existing entry with the same path
-    recentProjects = recentProjects.filter(p =>
-        path.normalize(p.path).toLowerCase() !== normalizedPath
-    );
+    // Use same aggressive normalization
+    let normalizedPath = path.resolve(project.path);
+    normalizedPath = normalizedPath.toLowerCase();
+    normalizedPath = normalizedPath.replace(/\\/g, '/');
+    normalizedPath = normalizedPath.replace(/\/$/, '');
+
+    console.log('➕ Adding project:', project.name, '|', normalizedPath);
+
+    // Remove any existing entry with the same normalized path
+    const beforeLength = recentProjects.length;
+    recentProjects = recentProjects.filter(p => {
+        let existingPath = path.resolve(p.path);
+        existingPath = existingPath.toLowerCase();
+        existingPath = existingPath.replace(/\\/g, '/');
+        existingPath = existingPath.replace(/\/$/, '');
+
+        if (existingPath === normalizedPath) {
+            console.log('🗑️ Removing existing entry:', p.name);
+            return false;
+        }
+        return true;
+    });
+
+    if (beforeLength !== recentProjects.length) {
+        console.log('✅ Removed existing duplicate before adding');
+    }
 
     // Add to front with lastAccessed timestamp
     recentProjects.unshift({
@@ -2832,6 +2880,7 @@ async function addToRecentProjects(project) {
     // Keep only last 50 projects
     recentProjects = recentProjects.slice(0, 50);
 
+    console.log('💾 Saving', recentProjects.length, 'projects...');
     // Save and refresh
     await ipcRenderer.invoke('save-recent-projects', recentProjects);
     displayRecentProjects();
