@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Manager Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Custom Titlebar -->
+    <div class="titlebar">
+        <div class="titlebar-drag-region">
+            <div class="titlebar-left">
+                <div class="app-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="menubar">
+                    <div class="menu-item" data-menu="file">File</div>
+                    <div class="menu-item" data-menu="edit">Edit</div>
+                    <div class="menu-item" data-menu="view">View</div>
+                    <div class="menu-item" data-menu="project">Project</div>
+                    <div class="menu-item" data-menu="tools">Tools</div>
+                    <div class="menu-item" data-menu="help">Help</div>
+                </div>
+            </div>
+            <div class="titlebar-center">
+                <span class="titlebar-title">Project Manager <span class="pro-badge">PRO</span></span>
+            </div>
+            <div class="titlebar-right">
+                <div class="window-controls">
+                    <button class="window-control minimize" id="minimize-btn">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button class="window-control maximize" id="maximize-btn">
+                        <i class="far fa-square"></i>
+                    </button>
+                    <button class="window-control close" id="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dropdown Menus -->
+        <div class="dropdown-menu" id="file-menu">
+            <div class="menu-option" id="new-project-menu">
+                <i class="fas fa-folder-plus"></i> New Project
+                <span class="shortcut">Ctrl+N</span>
+            </div>
+            <div class="menu-option" id="open-project-menu">
+                <i class="fas fa-folder-open"></i> Open Project
+                <span class="shortcut">Ctrl+O</span>
+            </div>
+            <div class="menu-option" id="import-project-menu">
+                <i class="fas fa-file-import"></i> Import Project
+                <span class="shortcut">Ctrl+I</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="save-workspace-menu">
+                <i class="fas fa-save"></i> Save Workspace
+                <span class="shortcut">Ctrl+S</span>
+            </div>
+            <div class="menu-option" id="export-project-menu">
+                <i class="fas fa-file-export"></i> Export Project
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="settings-menu">
+                <i class="fas fa-cog"></i> Settings
+                <span class="shortcut">Ctrl+,</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="exit-menu">
+                <i class="fas fa-sign-out-alt"></i> Exit
+                <span class="shortcut">Alt+F4</span>
+            </div>
+        </div>
+        
+        <div class="dropdown-menu" id="edit-menu">
+            <div class="menu-option" id="undo-menu">
+                <i class="fas fa-undo"></i> Undo
+                <span class="shortcut">Ctrl+Z</span>
+            </div>
+            <div class="menu-option" id="redo-menu">
+                <i class="fas fa-redo"></i> Redo
+                <span class="shortcut">Ctrl+Y</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="cut-menu">
+                <i class="fas fa-cut"></i> Cut
+                <span class="shortcut">Ctrl+X</span>
+            </div>
+            <div class="menu-option" id="copy-menu">
+                <i class="fas fa-copy"></i> Copy
+                <span class="shortcut">Ctrl+C</span>
+            </div>
+            <div class="menu-option" id="paste-menu">
+                <i class="fas fa-paste"></i> Paste
+                <span class="shortcut">Ctrl+V</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="find-menu">
+                <i class="fas fa-search"></i> Find Projects
+                <span class="shortcut">Ctrl+F</span>
+            </div>
+            <div class="menu-option" id="replace-menu">
+                <i class="fas fa-exchange-alt"></i> Find & Replace
+                <span class="shortcut">Ctrl+H</span>
+            </div>
+        </div>
+        
+        <div class="dropdown-menu" id="view-menu">
+            <div class="menu-option" id="toggle-sidebar-menu">
+                <i class="fas fa-bars"></i> Toggle Sidebar
+                <span class="shortcut">Ctrl+B</span>
+            </div>
+            <div class="menu-option" id="toggle-statusbar-menu">
+                <i class="fas fa-window-minimize"></i> Toggle Status Bar
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="theme-menu">
+                <i class="fas fa-palette"></i> Theme
+            </div>
+            <div class="menu-option" id="zoom-in-menu">
+                <i class="fas fa-search-plus"></i> Zoom In
+                <span class="shortcut">Ctrl++</span>
+            </div>
+            <div class="menu-option" id="zoom-out-menu">
+                <i class="fas fa-search-minus"></i> Zoom Out
+                <span class="shortcut">Ctrl+-</span>
+            </div>
+            <div class="menu-option" id="reset-zoom-menu">
+                <i class="fas fa-search"></i> Reset Zoom
+                <span class="shortcut">Ctrl+0</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="fullscreen-menu">
+                <i class="fas fa-expand"></i> Fullscreen
+                <span class="shortcut">F11</span>
+            </div>
+        </div>
+        
+        <div class="dropdown-menu" id="project-menu">
+            <div class="menu-option" id="build-project-menu">
+                <i class="fas fa-hammer"></i> Build Project
+                <span class="shortcut">Ctrl+Shift+B</span>
+            </div>
+            <div class="menu-option" id="run-project-menu">
+                <i class="fas fa-play"></i> Run Project
+                <span class="shortcut">F5</span>
+            </div>
+            <div class="menu-option" id="debug-project-menu">
+                <i class="fas fa-bug"></i> Debug Project
+                <span class="shortcut">F9</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="install-deps-menu">
+                <i class="fas fa-download"></i> Install Dependencies
+            </div>
+            <div class="menu-option" id="update-deps-menu">
+                <i class="fas fa-sync"></i> Update Dependencies
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="project-settings-menu">
+                <i class="fas fa-cog"></i> Project Settings
+            </div>
+            <div class="menu-option" id="delete-project-menu">
+                <i class="fas fa-trash"></i> Delete Project
+            </div>
+        </div>
+        
+        <div class="dropdown-menu" id="tools-menu">
+            <div class="menu-option" id="terminal-menu">
+                <i class="fas fa-terminal"></i> Open Terminal
+                <span class="shortcut">Ctrl+`</span>
+            </div>
+            <div class="menu-option" id="command-palette-menu">
+                <i class="fas fa-palette"></i> Command Palette
+                <span class="shortcut">Ctrl+Shift+P</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="git-init-menu">
+                <i class="fab fa-git"></i> Initialize Git
+            </div>
+            <div class="menu-option" id="git-commit-menu">
+                <i class="fas fa-check"></i> Git Commit
+            </div>
+            <div class="menu-option" id="git-push-menu">
+                <i class="fas fa-cloud-upload-alt"></i> Git Push
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="npm-install-menu">
+                <i class="fab fa-npm"></i> NPM Install
+            </div>
+            <div class="menu-option" id="pip-install-menu">
+                <i class="fab fa-python"></i> PIP Install
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="extensions-menu">
+                <i class="fas fa-puzzle-piece"></i> Extensions
+            </div>
+        </div>
+        
+        <div class="dropdown-menu" id="help-menu">
+            <div class="menu-option" id="documentation-menu">
+                <i class="fas fa-book"></i> Documentation
+                <span class="shortcut">F1</span>
+            </div>
+            <div class="menu-option" id="keyboard-shortcuts-menu">
+                <i class="fas fa-keyboard"></i> Keyboard Shortcuts
+                <span class="shortcut">Ctrl+K Ctrl+S</span>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="check-updates-menu">
+                <i class="fas fa-sync-alt"></i> Check for Updates
+            </div>
+            <div class="menu-option" id="report-issue-menu">
+                <i class="fas fa-bug"></i> Report Issue
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-option" id="about-menu">
+                <i class="fas fa-info-circle"></i> About
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-item active" data-view="dashboard">
+                <i class="fas fa-th-large"></i>
+                <span class="tooltip">Dashboard</span>
+            </div>
+            <div class="sidebar-item" data-view="projects">
+                <i class="fas fa-folder"></i>
+                <span class="tooltip">Projects</span>
+            </div>
+            <div class="sidebar-item" data-view="templates">
+                <i class="fas fa-layer-group"></i>
+                <span class="tooltip">Templates</span>
+            </div>
+            <div class="sidebar-item" data-view="recent">
+                <i class="fas fa-history"></i>
+                <span class="tooltip">Recent</span>
+            </div>
+            <div class="sidebar-item" data-view="git">
+                <i class="fab fa-git-alt"></i>
+                <span class="tooltip">Git</span>
+            </div>
+            <div class="sidebar-item" data-view="extensions">
+                <i class="fas fa-puzzle-piece"></i>
+                <span class="tooltip">Extensions</span>
+            </div>
+            <div class="sidebar-separator"></div>
+            <div class="sidebar-item bottom" id="github-account-btn">
+                <div class="account-avatar" id="account-avatar">
+                    <i class="fab fa-github"></i>
+                </div>
+                <span class="tooltip">GitHub Account</span>
+            </div>
+            <div class="sidebar-item bottom" data-view="settings">
+                <i class="fas fa-cog"></i>
+                <span class="tooltip">Settings</span>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard View -->
+            <div class="view active" id="dashboard-view">
+                <!-- Hero Section -->
+                <div class="dashboard-hero">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1 class="hero-title">
+                                <span class="gradient-text">Welcome Back</span>
+                            </h1>
+                            <p class="hero-subtitle">Let's build something amazing today</p>
+                            <div class="hero-stats">
+                                <div class="hero-stat-item">
+                                    <i class="fas fa-folder"></i>
+                                    <div>
+                                        <span class="hero-stat-value" id="hero-total-projects">0</span>
+                                        <span class="hero-stat-label">Projects</span>
+                                    </div>
+                                </div>
+                                <div class="hero-stat-divider"></div>
+                                <div class="hero-stat-item">
+                                    <i class="fas fa-code-branch"></i>
+                                    <div>
+                                        <span class="hero-stat-value" id="hero-git-repos">0</span>
+                                        <span class="hero-stat-label">Repositories</span>
+                                    </div>
+                                </div>
+                                <div class="hero-stat-divider"></div>
+                                <div class="hero-stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <span class="hero-stat-value" id="hero-recent">5</span>
+                                        <span class="hero-stat-label">Recent</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-illustration">
+                            <div class="floating-card card-1">
+                                <i class="fab fa-react"></i>
+                            </div>
+                            <div class="floating-card card-2">
+                                <i class="fab fa-node-js"></i>
+                            </div>
+                            <div class="floating-card card-3">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <div class="hero-circle"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Section -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Quick Actions</h2>
+                        <p class="section-subtitle">Get started quickly with these common tasks</p>
+                    </div>
+                    <div class="quick-actions-grid">
+                        <div class="action-card-modern primary" id="new-project-btn">
+                            <div class="action-icon-wrapper">
+                                <div class="action-icon-bg"></div>
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Create Project</h3>
+                                <p>Start a new project from scratch or use a template</p>
+                                <div class="action-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card-modern secondary" id="open-folder-btn">
+                            <div class="action-icon-wrapper">
+                                <div class="action-icon-bg"></div>
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Open Folder</h3>
+                                <p>Browse and open an existing project directory</p>
+                                <div class="action-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card-modern accent" id="clone-repo-btn">
+                            <div class="action-icon-wrapper">
+                                <div class="action-icon-bg"></div>
+                                <i class="fab fa-git-alt"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Clone Repository</h3>
+                                <p>Clone a Git repository from GitHub, GitLab, or other</p>
+                                <div class="action-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card-modern info" id="import-project-btn">
+                            <div class="action-icon-wrapper">
+                                <div class="action-icon-bg"></div>
+                                <i class="fas fa-file-import"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Import Project</h3>
+                                <p>Import an existing project into your workspace</p>
+                                <div class="action-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Projects Section -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Recent Projects</h2>
+                            <p class="section-subtitle">Pick up where you left off</p>
+                        </div>
+                        <button class="btn-text" onclick="switchView('projects')">
+                            View All <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="recent-projects-modern" id="recent-projects-list">
+                        <!-- Recent projects will be populated here -->
+                        <div class="empty-state-modern">
+                            <div class="empty-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <h3>No Recent Projects</h3>
+                            <p>Create or open a project to get started</p>
+                            <button class="btn-primary" onclick="document.getElementById('new-project-btn').click()">
+                                <i class="fas fa-plus"></i> Create Your First Project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips & Resources Section -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Tips & Resources</h2>
+                        <p class="section-subtitle">Get the most out of Project Manager Pro</p>
+                    </div>
+                    <div class="tips-grid" id="tips-container">
+                        <!-- Tips will be rotated automatically every 30 seconds -->
+                    </div>
+                    <div class="tips-navigation" id="tips-navigation">
+                        <!-- Navigation dots will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects View -->
+            <div class="view" id="projects-view">
+                <div class="view-header">
+                    <div>
+                        <h1>All Projects</h1>
+                        <p class="subtitle">Manage and organize your development projects</p>
+                    </div>
+                    <div class="view-actions">
+                        <input type="text" id="project-search" placeholder="Search projects..." class="search-input" />
+                        <select id="project-sort" class="sort-dropdown">
+                            <option value="name">Sort by Name</option>
+                            <option value="date">Last Modified</option>
+                            <option value="size">Size</option>
+                            <option value="type">Type</option>
+                        </select>
+                        <button class="btn-secondary" id="change-workspace">
+                            <i class="fas fa-exchange-alt"></i> Change Workspace
+                        </button>
+                        <button class="btn-primary" id="create-project">
+                            <i class="fas fa-plus"></i> New Project
+                        </button>
+                    </div>
+                </div>
+
+                <div class="projects-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-folder"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="total-projects">0</span>
+                            <span class="stat-label">Total Projects</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-code"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="active-projects">0</span>
+                            <span class="stat-label">Active This Week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-database"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="total-size">0 MB</span>
+                            <span class="stat-label">Total Size</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fab fa-git-alt"></i>
+                        <div class="stat-info">
+                            <span class="stat-value" id="git-projects">0</span>
+                            <span class="stat-label">Git Repositories</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="projects-filter">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">
+                            <i class="fas fa-th"></i> All Projects
+                        </button>
+                        <button class="filter-tab" data-filter="web">
+                            <i class="fab fa-html5"></i> Web
+                        </button>
+                        <button class="filter-tab" data-filter="node">
+                            <i class="fab fa-node-js"></i> Node.js
+                        </button>
+                        <button class="filter-tab" data-filter="python">
+                            <i class="fab fa-python"></i> Python
+                        </button>
+                        <button class="filter-tab" data-filter="react">
+                            <i class="fab fa-react"></i> React
+                        </button>
+                        <button class="filter-tab" data-filter="other">
+                            <i class="fas fa-code"></i> Other
+                        </button>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="grid">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-toggle-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="projects-list grid-view" id="all-projects-list">
+                    <!-- Projects will be listed here -->
+                </div>
+            </div>
+
+            <!-- Templates View -->
+            <div class="view" id="templates-view">
+                <div class="view-header">
+                    <h1>Project Templates</h1>
+                    <p class="subtitle">Choose a template to start your project</p>
+                </div>
+                <div class="templates-grid">
+                    <div class="template-card" data-template="electron">
+                        <div class="template-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <h3>Electron App</h3>
+                        <p>Desktop application with web technologies</p>
+                        <div class="template-tags">
+                            <span class="tag">Desktop</span>
+                            <span class="tag">Cross-platform</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="python">
+                        <div class="template-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h3>Python Project</h3>
+                        <p>Python application with virtual environment</p>
+                        <div class="template-tags">
+                            <span class="tag">Backend</span>
+                            <span class="tag">Data Science</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="web">
+                        <div class="template-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <h3>Web Project</h3>
+                        <p>HTML, CSS, and JavaScript website</p>
+                        <div class="template-tags">
+                            <span class="tag">Frontend</span>
+                            <span class="tag">Static Site</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="nodejs">
+                        <div class="template-icon">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <h3>Node.js App</h3>
+                        <p>Express server with REST API</p>
+                        <div class="template-tags">
+                            <span class="tag">Backend</span>
+                            <span class="tag">API</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="react">
+                        <div class="template-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <h3>React App</h3>
+                        <p>Modern React application</p>
+                        <div class="template-tags">
+                            <span class="tag">Frontend</span>
+                            <span class="tag">SPA</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="vue">
+                        <div class="template-icon">
+                            <i class="fab fa-vuejs"></i>
+                        </div>
+                        <h3>Vue.js App</h3>
+                        <p>Vue 3 application with router</p>
+                        <div class="template-tags">
+                            <span class="tag">Frontend</span>
+                            <span class="tag">Progressive</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="cpp">
+                        <div class="template-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>C++ Project</h3>
+                        <p>C++ application with CMake</p>
+                        <div class="template-tags">
+                            <span class="tag">System</span>
+                            <span class="tag">Performance</span>
+                        </div>
+                    </div>
+                    <div class="template-card" data-template="java">
+                        <div class="template-icon">
+                            <i class="fab fa-java"></i>
+                        </div>
+                        <h3>Java Project</h3>
+                        <p>Java application with Maven</p>
+                        <div class="template-tags">
+                            <span class="tag">Enterprise</span>
+                            <span class="tag">Cross-platform</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent View -->
+            <div class="view" id="recent-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Recent Activity</h1>
+                        <p class="subtitle">Track your development workflow and history</p>
+                    </div>
+                    <div class="view-actions">
+                        <select id="activity-filter" class="sort-dropdown">
+                            <option value="all">All Activities</option>
+                            <option value="projects">Projects</option>
+                            <option value="git">Git Operations</option>
+                            <option value="extensions">Extensions</option>
+                            <option value="settings">Settings</option>
+                        </select>
+                        <button class="btn-secondary" id="export-activity">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn-secondary" id="clear-recent">
+                            <i class="fas fa-broom"></i> Clear History
+                        </button>
+                    </div>
+                </div>
+
+                <div class="activity-stats">
+                    <div class="activity-stat">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <span class="stat-number" id="activities-today">0</span>
+                            <span class="stat-text">Today</span>
+                        </div>
+                    </div>
+                    <div class="activity-stat">
+                        <i class="fas fa-calendar-week"></i>
+                        <div>
+                            <span class="stat-number" id="activities-week">0</span>
+                            <span class="stat-text">This Week</span>
+                        </div>
+                    </div>
+                    <div class="activity-stat">
+                        <i class="fas fa-folder-open"></i>
+                        <div>
+                            <span class="stat-number" id="projects-opened">0</span>
+                            <span class="stat-text">Projects Opened</span>
+                        </div>
+                    </div>
+                    <div class="activity-stat">
+                        <i class="fab fa-git-alt"></i>
+                        <div>
+                            <span class="stat-number" id="git-operations">0</span>
+                            <span class="stat-text">Git Operations</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-timeline">
+                    <div class="timeline-controls">
+                        <button class="timeline-btn active" data-period="today">Today</button>
+                        <button class="timeline-btn" data-period="week">This Week</button>
+                        <button class="timeline-btn" data-period="month">This Month</button>
+                        <button class="timeline-btn" data-period="all">All Time</button>
+                    </div>
+
+                    <div class="recent-activity" id="recent-activity-list">
+                        <!-- Timeline items will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Git View -->
+            <div class="view" id="git-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Git Repository Management</h1>
+                        <p class="subtitle">Source control and version management</p>
+                    </div>
+                    <div class="view-actions">
+                        <button class="btn-secondary" id="git-undo-btn" title="Undo Last Git Operation">
+                            <i class="fas fa-undo"></i> Undo
+                        </button>
+                        <button class="btn-secondary" id="git-history-btn" onclick="loadCommitHistory()">
+                            <i class="fas fa-history"></i> History
+                        </button>
+                        <button class="btn-secondary" id="git-refresh">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn-secondary" id="clone-repo">
+                            <i class="fab fa-git-alt"></i> Clone
+                        </button>
+                        <button class="btn-primary" id="github-upload-btn">
+                            <i class="fab fa-github"></i> Upload to GitHub
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Selector -->
+                <div class="git-project-selector">
+                    <div class="git-project-dropdown-container">
+                        <label for="git-project-select" class="git-dropdown-label">
+                            <i class="fas fa-folder-tree"></i> Active Repository
+                        </label>
+                        <div class="git-dropdown-wrapper">
+                            <button class="git-project-dropdown-btn" id="git-project-dropdown-btn">
+                                <div class="git-dropdown-content">
+                                    <i class="fas fa-folder-open"></i>
+                                    <div class="git-dropdown-text">
+                                        <span class="git-dropdown-title" id="git-selected-project-name">No repository selected</span>
+                                        <span class="git-dropdown-subtitle" id="git-selected-project-path">Select a project to manage</span>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down git-dropdown-arrow"></i>
+                            </button>
+                            <div class="git-projects-menu" id="git-projects-menu">
+                                <div class="git-projects-menu-header">
+                                    <input type="text" class="git-projects-search" id="git-projects-search" placeholder="Search repositories...">
+                                </div>
+                                <div class="git-projects-menu-body" id="git-projects-menu-body">
+                                    <div class="git-projects-menu-empty">
+                                        <i class="fas fa-folder-open"></i>
+                                        <p>No projects found</p>
+                                        <small>Create a project or clone a repository to get started</small>
+                                    </div>
+                                </div>
+                                <div class="git-projects-menu-footer">
+                                    <button class="git-projects-menu-action" id="git-open-folder-btn">
+                                        <i class="fas fa-folder-plus"></i>
+                                        <span>Open Folder</span>
+                                    </button>
+                                    <button class="git-projects-menu-action" id="git-new-project-btn">
+                                        <i class="fas fa-plus"></i>
+                                        <span>New Project</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="git-repo-status-badges" id="git-repo-status-badges">
+                        <!-- Status badges will be inserted here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Git Tabs -->
+                <div class="git-tabs">
+                    <div class="git-tab active" data-tab="overview">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Overview</span>
+                    </div>
+                    <div class="git-tab" data-tab="changes">
+                        <i class="fas fa-file-code"></i>
+                        <span>Changes</span>
+                    </div>
+                    <div class="git-tab" data-tab="branches">
+                        <i class="fas fa-code-branch"></i>
+                        <span>Branches</span>
+                    </div>
+                    <div class="git-tab" data-tab="advanced">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="git-tab" data-tab="github">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="git-tab-content">
+                    <!-- Overview Tab -->
+                    <div class="git-tab-panel active" id="git-tab-overview">
+                        <!-- Git Stats -->
+                        <div class="git-stats">
+                            <div class="git-stat-card">
+                                <i class="fab fa-git-alt"></i>
+                                <div class="git-stat-info">
+                                    <span class="git-stat-value" id="git-branch">main</span>
+                                    <span class="git-stat-label">Current Branch</span>
+                                </div>
+                            </div>
+                            <div class="git-stat-card">
+                                <i class="fas fa-code-branch"></i>
+                                <div class="git-stat-info">
+                                    <span class="git-stat-value" id="git-commits">0</span>
+                                    <span class="git-stat-label">Commits</span>
+                                </div>
+                            </div>
+                            <div class="git-stat-card">
+                                <i class="fas fa-file-alt"></i>
+                                <div class="git-stat-info">
+                                    <span class="git-stat-value" id="git-modified">0</span>
+                                    <span class="git-stat-label">Modified Files</span>
+                                </div>
+                            </div>
+                            <div class="git-stat-card">
+                                <i class="fas fa-user-friends"></i>
+                                <div class="git-stat-info">
+                                    <span class="git-stat-value" id="git-contributors">1</span>
+                                    <span class="git-stat-label">Contributors</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="git-card">
+                            <div class="git-card-header">
+                                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                            </div>
+                            <div class="git-card-body">
+                                <div class="git-quick-actions">
+                                    <button class="git-action-btn" id="git-init-btn">
+                                        <i class="fas fa-play"></i>
+                                        <span>Initialize Repo</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-fetch-btn">
+                                        <i class="fas fa-download"></i>
+                                        <span>Fetch</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-stash-btn">
+                                        <i class="fas fa-archive"></i>
+                                        <span>Stash Changes</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-remotes-btn" onclick="showRemotesModal()">
+                                        <i class="fas fa-globe"></i>
+                                        <span>Manage Remotes</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Changes Tab -->
+                    <div class="git-tab-panel" id="git-tab-changes">
+                        <div class="git-tab-grid">
+                            <!-- Changes -->
+                            <div class="git-card git-changes-card">
+                                <div class="git-card-header">
+                                    <h3><i class="fas fa-file-code"></i> Changes</h3>
+                                    <div class="git-header-actions">
+                                        <button class="btn-icon" id="git-stage-all" title="Stage All">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button class="btn-icon" id="git-discard-all" title="Discard All">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="git-card-body git-scrollable">
+                                    <div id="git-status" class="git-changes-list">
+                                        <div class="git-changes-group">
+                                            <div class="git-changes-group-header">
+                                                <i class="fas fa-circle" style="color: #4ec9b0;"></i>
+                                                <span>Staged Changes (0)</span>
+                                            </div>
+                                            <div class="git-changes-empty" id="git-staged-changes">
+                                                No staged changes
+                                            </div>
+                                        </div>
+                                        <div class="git-changes-group">
+                                            <div class="git-changes-group-header">
+                                                <i class="fas fa-circle" style="color: #ce9178;"></i>
+                                                <span>Unstaged Changes (0)</span>
+                                            </div>
+                                            <div class="git-changes-empty" id="git-unstaged-changes">
+                                                No unstaged changes
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="git-tab-right">
+                                <!-- Commit Section -->
+                                <div class="git-card">
+                                    <div class="git-card-header">
+                                        <h3><i class="fas fa-code-commit"></i> Commit</h3>
+                                    </div>
+                                    <div class="git-card-body">
+                                        <textarea id="git-commit-message-input" class="git-commit-input" placeholder="Commit message..." rows="3"></textarea>
+                                        <div class="git-commit-actions">
+                                            <button class="btn-primary" id="git-commit-btn">
+                                                <i class="fas fa-check"></i> Commit
+                                            </button>
+                                            <button class="btn-secondary" id="git-commit-push-btn">
+                                                <i class="fas fa-cloud-upload-alt"></i> Commit & Push
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Remote Actions -->
+                                <div class="git-card">
+                                    <div class="git-card-header">
+                                        <h3><i class="fas fa-cloud"></i> Remote</h3>
+                                    </div>
+                                    <div class="git-card-body">
+                                        <div class="git-remote-actions">
+                                            <button class="btn-secondary git-remote-btn" id="git-pull-btn">
+                                                <i class="fas fa-cloud-download-alt"></i>
+                                                <span>Pull</span>
+                                            </button>
+                                            <button class="btn-secondary git-remote-btn" id="git-push-btn">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <span>Push</span>
+                                            </button>
+                                            <button class="btn-secondary git-remote-btn" id="git-sync-btn">
+                                                <i class="fas fa-sync"></i>
+                                                <span>Sync</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branches Tab -->
+                    <div class="git-tab-panel" id="git-tab-branches">
+                        <div class="git-tab-grid">
+                            <!-- Branch Management -->
+                            <div class="git-card">
+                                <div class="git-card-header">
+                                    <h3><i class="fas fa-code-branch"></i> Branches</h3>
+                                    <button class="btn-icon" id="git-new-branch" title="New Branch">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="git-card-body">
+                                    <div class="git-branch-list" id="git-branch-list">
+                                        <div class="git-branch-item active">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>main</span>
+                                        </div>
+                                        <div class="git-branch-item">
+                                            <i class="far fa-circle"></i>
+                                            <span>develop</span>
+                                        </div>
+                                        <div class="git-branch-item">
+                                            <i class="far fa-circle"></i>
+                                            <span>feature/new-ui</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Branch Operations -->
+                            <div class="git-card">
+                                <div class="git-card-header">
+                                    <h3><i class="fas fa-code-merge"></i> Branch Operations</h3>
+                                </div>
+                                <div class="git-card-body">
+                                    <div class="git-quick-actions">
+                                        <button class="git-action-btn" id="git-merge-btn">
+                                            <i class="fas fa-code-merge"></i>
+                                            <span>Merge</span>
+                                        </button>
+                                        <button class="git-action-btn" id="git-rebase-btn">
+                                            <i class="fas fa-diagram-project"></i>
+                                            <span>Rebase</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Tab -->
+                    <div class="git-tab-panel" id="git-tab-advanced">
+                        <div class="git-card">
+                            <div class="git-card-header">
+                                <h3><i class="fas fa-wand-magic-sparkles"></i> Advanced Operations</h3>
+                            </div>
+                            <div class="git-card-body">
+                                <div class="git-advanced-actions">
+                                    <button class="git-action-btn" id="git-cherry-pick-btn">
+                                        <i class="fas fa-hand-pointer"></i>
+                                        <span>Cherry Pick</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-tags-btn">
+                                        <i class="fas fa-tag"></i>
+                                        <span>Manage Tags</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-reset-btn">
+                                        <i class="fas fa-rotate-left"></i>
+                                        <span>Reset</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-revert-btn">
+                                        <i class="fas fa-undo"></i>
+                                        <span>Revert Commit</span>
+                                    </button>
+                                    <button class="git-action-btn" id="git-clean-btn">
+                                        <i class="fas fa-broom"></i>
+                                        <span>Clean</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GitHub Tab -->
+                    <div class="git-tab-panel" id="git-tab-github">
+                        <div class="git-card">
+                            <div class="git-card-header">
+                                <h3><i class="fab fa-github"></i> GitHub Integration</h3>
+                            </div>
+                            <div class="git-card-body">
+                                <div class="github-status" id="github-status">
+                                    <div class="github-not-connected">
+                                        <i class="fab fa-github"></i>
+                                        <p>Not connected to GitHub</p>
+                                        <button class="btn-secondary" id="github-connect-btn">
+                                            <i class="fas fa-link"></i> Connect Account
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="github-actions" id="github-actions" style="display: none;">
+                                    <button class="git-action-btn" id="github-create-repo-btn">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Create Repository</span>
+                                    </button>
+                                    <button class="git-action-btn" id="github-publish-btn">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Publish Branch</span>
+                                    </button>
+                                    <button class="git-action-btn" id="github-pr-btn">
+                                        <i class="fas fa-code-pull-request"></i>
+                                        <span>Create PR</span>
+                                    </button>
+                                    <button class="git-action-btn" id="github-issues-btn">
+                                        <i class="fas fa-circle-exclamation"></i>
+                                        <span>View Issues</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extensions View -->
+            <div class="view" id="extensions-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Extensions & Plugins</h1>
+                        <p class="subtitle">Manage and discover extensions for your workspace</p>
+                    </div>
+                    <div class="view-actions">
+                        <input type="text" id="extension-search" placeholder="Search extensions..." class="search-input" />
+                        <button class="btn-secondary" id="refresh-extensions">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn-primary" id="browse-extensions">
+                            <i class="fas fa-store"></i> Browse Store
+                        </button>
+                    </div>
+                </div>
+                <div class="extensions-container">
+                    <div class="extensions-tabs">
+                        <div class="tab active" data-tab="installed">
+                            <i class="fas fa-check-circle"></i> Installed <span class="tab-badge">4</span>
+                        </div>
+                        <div class="tab" data-tab="recommended">
+                            <i class="fas fa-star"></i> Recommended
+                        </div>
+                        <div class="tab" data-tab="popular">
+                            <i class="fas fa-fire"></i> Popular
+                        </div>
+                        <div class="tab" data-tab="categories">
+                            <i class="fas fa-th"></i> Categories
+                        </div>
+                    </div>
+                    <div class="extensions-content">
+                        <div class="tab-content active" id="installed-extensions">
+                            <div class="extension-card enabled">
+                                <div class="extension-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Code Formatter<span class="extension-status enabled">Enabled</span></h4>
+                                    <p>Automatically format code on save with support for JavaScript, TypeScript, Python, and more</p>
+                                    <div class="extension-meta">
+                                        <span class="version"><i class="fas fa-tag"></i> v1.2.0</span>
+                                        <span class="author"><i class="fas fa-user"></i> Built-in</span>
+                                        <span class="updated"><i class="fas fa-clock"></i> Updated 2 days ago</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-secondary" data-action="disable">
+                                        <i class="fas fa-pause"></i> Disable
+                                    </button>
+                                    <button class="btn-small" data-action="settings">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card enabled">
+                                <div class="extension-icon">
+                                    <i class="fas fa-spell-check"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Spell Checker<span class="extension-status enabled">Enabled</span></h4>
+                                    <p>Check spelling in comments and strings across multiple languages</p>
+                                    <div class="extension-meta">
+                                        <span class="version"><i class="fas fa-tag"></i> v1.0.5</span>
+                                        <span class="author"><i class="fas fa-user"></i> Built-in</span>
+                                        <span class="updated"><i class="fas fa-clock"></i> Updated 1 week ago</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-secondary" data-action="disable">
+                                        <i class="fas fa-pause"></i> Disable
+                                    </button>
+                                    <button class="btn-small" data-action="settings">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card disabled">
+                                <div class="extension-icon">
+                                    <i class="fab fa-npm"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>NPM IntelliSense<span class="extension-status disabled">Disabled</span></h4>
+                                    <p>Autocomplete npm modules in import statements</p>
+                                    <div class="extension-meta">
+                                        <span class="version"><i class="fas fa-tag"></i> v2.3.1</span>
+                                        <span class="author"><i class="fas fa-user"></i> Community</span>
+                                        <span class="downloads"><i class="fas fa-download"></i> 1.2M downloads</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="enable">
+                                        <i class="fas fa-play"></i> Enable
+                                    </button>
+                                    <button class="btn-small btn-secondary" data-action="uninstall">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card enabled">
+                                <div class="extension-icon">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Python Extension<span class="extension-status enabled">Enabled</span></h4>
+                                    <p>IntelliSense, linting, debugging, code navigation for Python</p>
+                                    <div class="extension-meta">
+                                        <span class="version"><i class="fas fa-tag"></i> v3.1.4</span>
+                                        <span class="author"><i class="fas fa-user"></i> Microsoft</span>
+                                        <span class="downloads"><i class="fas fa-download"></i> 5.8M downloads</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-secondary" data-action="disable">
+                                        <i class="fas fa-pause"></i> Disable
+                                    </button>
+                                    <button class="btn-small" data-action="settings">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="recommended-extensions">
+                            <div class="extension-card">
+                                <div class="extension-icon">
+                                    <i class="fab fa-git-alt"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>GitLens</h4>
+                                    <p>Supercharge Git with blame annotations, code lens, and powerful comparison commands</p>
+                                    <div class="extension-meta">
+                                        <span class="downloads"><i class="fas fa-download"></i> 2.5M downloads</span>
+                                        <span class="rating"><i class="fas fa-star"></i> 4.8 (1.2K reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="install">
+                                        <i class="fas fa-download"></i> Install
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card">
+                                <div class="extension-icon">
+                                    <i class="fas fa-indent"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Prettier - Code Formatter</h4>
+                                    <p>Code formatter using prettier with support for many languages</p>
+                                    <div class="extension-meta">
+                                        <span class="downloads"><i class="fas fa-download"></i> 8.2M downloads</span>
+                                        <span class="rating"><i class="fas fa-star"></i> 4.9 (2.5K reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="install">
+                                        <i class="fas fa-download"></i> Install
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card">
+                                <div class="extension-icon">
+                                    <i class="fas fa-brackets-curly"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>ESLint</h4>
+                                    <p>Integrates ESLint JavaScript into your editor for real-time linting</p>
+                                    <div class="extension-meta">
+                                        <span class="downloads"><i class="fas fa-download"></i> 12.3M downloads</span>
+                                        <span class="rating"><i class="fas fa-star"></i> 4.7 (3.1K reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="install">
+                                        <i class="fas fa-download"></i> Install
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="popular-extensions">
+                            <div class="extension-card">
+                                <div class="extension-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Theme Pack Pro</h4>
+                                    <p>Collection of 50+ premium dark and light themes for your editor</p>
+                                    <div class="extension-meta">
+                                        <span class="downloads"><i class="fas fa-download"></i> 5.1M downloads</span>
+                                        <span class="rating"><i class="fas fa-star"></i> 4.6 (890 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="install">
+                                        <i class="fas fa-download"></i> Install
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card">
+                                <div class="extension-icon">
+                                    <i class="fas fa-plug"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Live Server</h4>
+                                    <p>Launch a development local server with live reload feature for static pages</p>
+                                    <div class="extension-meta">
+                                        <span class="downloads"><i class="fas fa-download"></i> 7.4M downloads</span>
+                                        <span class="rating"><i class="fas fa-star"></i> 4.9 (1.8K reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="install">
+                                        <i class="fas fa-download"></i> Install
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="extension-card">
+                                <div class="extension-icon">
+                                    <i class="fas fa-folder-tree"></i>
+                                </div>
+                                <div class="extension-info">
+                                    <h4>Path IntelliSense</h4>
+                                    <p>Visual Studio Code plugin that autocompletes filenames</p>
+                                    <div class="extension-meta">
+                                        <span class="downloads"><i class="fas fa-download"></i> 3.9M downloads</span>
+                                        <span class="rating"><i class="fas fa-star"></i> 4.8 (650 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="extension-actions">
+                                    <button class="btn-small btn-primary" data-action="install">
+                                        <i class="fas fa-download"></i> Install
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="categories-extensions">
+                            <div class="extension-categories">
+                                <div class="category-card" data-category="languages">
+                                    <i class="fas fa-language"></i>
+                                    <h4>Programming Languages</h4>
+                                    <p>Extensions for Python, JavaScript, Java, C++, and more</p>
+                                    <span class="category-count">24 extensions</span>
+                                </div>
+                                <div class="category-card" data-category="snippets">
+                                    <i class="fas fa-file-code"></i>
+                                    <h4>Snippets</h4>
+                                    <p>Code snippets for faster development</p>
+                                    <span class="category-count">18 extensions</span>
+                                </div>
+                                <div class="category-card" data-category="linters">
+                                    <i class="fas fa-check-double"></i>
+                                    <h4>Linters & Formatters</h4>
+                                    <p>Code quality and formatting tools</p>
+                                    <span class="category-count">15 extensions</span>
+                                </div>
+                                <div class="category-card" data-category="themes">
+                                    <i class="fas fa-paint-brush"></i>
+                                    <h4>Themes & Icons</h4>
+                                    <p>Customize your editor appearance</p>
+                                    <span class="category-count">32 extensions</span>
+                                </div>
+                                <div class="category-card" data-category="debuggers">
+                                    <i class="fas fa-bug"></i>
+                                    <h4>Debuggers</h4>
+                                    <p>Debugging tools for various languages</p>
+                                    <span class="category-count">12 extensions</span>
+                                </div>
+                                <div class="category-card" data-category="productivity">
+                                    <i class="fas fa-rocket"></i>
+                                    <h4>Productivity</h4>
+                                    <p>Tools to enhance your workflow</p>
+                                    <span class="category-count">28 extensions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view" id="settings-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Settings</h1>
+                        <p class="subtitle">Customize your AppManager experience</p>
+                    </div>
+                    <div class="settings-header-actions">
+                        <button class="btn-secondary" id="import-settings-btn" title="Import Settings">
+                            <i class="fas fa-file-import"></i>
+                        </button>
+                        <button class="btn-secondary" id="export-settings-btn" title="Export Settings">
+                            <i class="fas fa-file-export"></i>
+                        </button>
+                        <button class="btn-primary" id="save-settings-btn">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+                </div>
+                <!-- Settings Search Bar -->
+                <div class="settings-search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="settings-search" placeholder="Search settings..." autocomplete="off" />
+                        <button class="clear-search-btn" id="clear-settings-search" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="settings-breadcrumb" id="settings-breadcrumb">
+                        <span class="breadcrumb-item active">General</span>
+                    </div>
+                </div>
+                <div class="settings-container">
+                    <div class="settings-sidebar">
+                        <div class="settings-category active" data-category="general">
+                            <i class="fas fa-cog"></i> General
+                        </div>
+                        <div class="settings-category" data-category="appearance">
+                            <i class="fas fa-palette"></i> Appearance
+                        </div>
+                        <div class="settings-category" data-category="editor">
+                            <i class="fas fa-code"></i> Editor
+                        </div>
+                        <div class="settings-category" data-category="terminal">
+                            <i class="fas fa-terminal"></i> Terminal
+                        </div>
+                        <div class="settings-category" data-category="git">
+                            <i class="fab fa-git-alt"></i> Git
+                        </div>
+                        <div class="settings-category" data-category="extensions">
+                            <i class="fas fa-puzzle-piece"></i> Extensions
+                        </div>
+                        <div class="settings-category" data-category="advanced">
+                            <i class="fas fa-tools"></i> Advanced
+                        </div>
+                    </div>
+                    <div class="settings-content">
+                        <div class="settings-panel active" id="general-settings">
+                            <h2>General Settings</h2>
+                            <div class="setting-group">
+                                <h3>Workspace</h3>
+                                <div class="setting-item">
+                                    <label for="default-project-path">Default Project Location</label>
+                                    <p class="setting-description">The default folder where new projects will be created</p>
+                                    <div class="input-group">
+                                        <input type="text" id="default-project-path" placeholder="C:\Projects" />
+                                        <button class="btn-secondary" id="browse-default-path">
+                                            <i class="fas fa-folder-open"></i> Browse
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="recent-projects-limit">Recent Projects Limit</label>
+                                    <p class="setting-description">Maximum number of recent projects to display</p>
+                                    <input type="number" id="recent-projects-limit" min="5" max="50" value="10" />
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Behavior</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="auto-save" checked />
+                                        <span>Enable auto-save</span>
+                                    </label>
+                                    <p class="setting-description">Automatically save changes without prompting</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="open-in-vscode" checked />
+                                        <span>Open projects in VS Code automatically</span>
+                                    </label>
+                                    <p class="setting-description">Launch VS Code when opening a project</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-welcome" checked />
+                                        <span>Show welcome screen on startup</span>
+                                    </label>
+                                    <p class="setting-description">Display the welcome view when launching AppManager</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="confirm-delete" checked />
+                                        <span>Confirm before deleting projects</span>
+                                    </label>
+                                    <p class="setting-description">Show confirmation dialog when deleting projects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel" id="appearance-settings">
+                            <h2>Appearance Settings</h2>
+                            <div class="setting-group">
+                                <h3>Theme</h3>
+                                <div class="setting-item">
+                                    <label for="theme-select">Color Theme</label>
+                                    <p class="setting-description">Choose the color theme for the application</p>
+                                    <select id="theme-select">
+                                        <option value="dark">Dark (VSCode Default)</option>
+                                        <option value="light">Light</option>
+                                        <option value="high-contrast">High Contrast</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="accent-color">Accent Color</label>
+                                    <p class="setting-description">Primary accent color for buttons and highlights</p>
+                                    <select id="accent-color">
+                                        <option value="#007acc">Blue (Default)</option>
+                                        <option value="#0098ff">Light Blue</option>
+                                        <option value="#00bc8c">Green</option>
+                                        <option value="#9580ff">Purple</option>
+                                        <option value="#ff6b6b">Red</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Typography</h3>
+                                <div class="setting-item">
+                                    <label for="font-family">Font Family</label>
+                                    <p class="setting-description">Font used throughout the interface</p>
+                                    <select id="font-family">
+                                        <option value="system">System Default</option>
+                                        <option value="Consolas">Consolas</option>
+                                        <option value="'Courier New'">Courier New</option>
+                                        <option value="Monaco">Monaco</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="font-size">Font Size: <span id="font-size-value">13px</span></label>
+                                    <p class="setting-description">Base font size for the UI</p>
+                                    <input type="range" id="font-size" min="10" max="20" value="13" />
+                                </div>
+                                <div class="setting-item">
+                                    <label for="ui-scale">UI Scale: <span id="ui-scale-value">100%</span></label>
+                                    <p class="setting-description">Scale the entire interface</p>
+                                    <input type="range" id="ui-scale" min="80" max="150" step="10" value="100" />
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Window</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="smooth-scrolling" checked />
+                                        <span>Enable smooth scrolling</span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="animations-enabled" checked />
+                                        <span>Enable UI animations</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel" id="editor-settings">
+                            <h2>Editor Settings</h2>
+                            <div class="setting-group">
+                                <h3>Code Editor</h3>
+                                <div class="setting-item">
+                                    <label for="editor-path">Default Code Editor</label>
+                                    <p class="setting-description">Path to your preferred code editor executable</p>
+                                    <div class="input-group">
+                                        <input type="text" id="editor-path" placeholder="C:\Program Files\Microsoft VS Code\Code.exe" />
+                                        <button class="btn-secondary" id="browse-editor-path">
+                                            <i class="fas fa-folder-open"></i> Browse
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="editor-args">Editor Arguments</label>
+                                    <p class="setting-description">Command line arguments to pass to the editor</p>
+                                    <input type="text" id="editor-args" placeholder="--new-window" />
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>File Associations</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="open-readme" checked />
+                                        <span>Open README.md on project creation</span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="create-gitignore" checked />
+                                        <span>Create .gitignore file by default</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel" id="terminal-settings">
+                            <h2>Terminal Settings</h2>
+                            <div class="setting-group">
+                                <h3>Shell Configuration</h3>
+                                <div class="setting-item">
+                                    <label for="terminal-app">Default Terminal</label>
+                                    <p class="setting-description">Shell to use when opening terminal</p>
+                                    <select id="terminal-app">
+                                        <option value="cmd">Command Prompt (CMD)</option>
+                                        <option value="powershell">PowerShell</option>
+                                        <option value="wt">Windows Terminal</option>
+                                        <option value="bash">Git Bash</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="terminal-path">Custom Terminal Path</label>
+                                    <p class="setting-description">Path to custom terminal executable (optional)</p>
+                                    <div class="input-group">
+                                        <input type="text" id="terminal-path" placeholder="Leave empty for system default" />
+                                        <button class="btn-secondary" id="browse-terminal-path">
+                                            <i class="fas fa-folder-open"></i> Browse
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Terminal Behavior</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="terminal-cwd" checked />
+                                        <span>Open terminal in project directory</span>
+                                    </label>
+                                    <p class="setting-description">Start terminal in the selected project folder</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="terminal-admin" />
+                                        <span>Run terminal as administrator</span>
+                                    </label>
+                                    <p class="setting-description">Launch terminal with elevated privileges</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel" id="git-settings">
+                            <h2>Git Settings</h2>
+                            <div class="setting-group">
+                                <h3>Git Configuration</h3>
+                                <div class="setting-item">
+                                    <label for="git-path">Git Executable Path</label>
+                                    <p class="setting-description">Path to git executable (leave empty for system default)</p>
+                                    <div class="input-group">
+                                        <input type="text" id="git-path" placeholder="C:\Program Files\Git\bin\git.exe" />
+                                        <button class="btn-secondary" id="browse-git-path">
+                                            <i class="fas fa-folder-open"></i> Browse
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="git-username">Default Git Username</label>
+                                    <p class="setting-description">Username for git commits</p>
+                                    <input type="text" id="git-username" placeholder="John Doe" />
+                                </div>
+                                <div class="setting-item">
+                                    <label for="git-email">Default Git Email</label>
+                                    <p class="setting-description">Email for git commits</p>
+                                    <input type="email" id="git-email" placeholder="john@example.com" />
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Repository Settings</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="git-auto-init" checked />
+                                        <span>Initialize Git repository on project creation</span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="git-auto-fetch" />
+                                        <span>Auto-fetch from remote every 5 minutes</span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="default-branch">Default Branch Name</label>
+                                    <p class="setting-description">Name for the initial branch</p>
+                                    <input type="text" id="default-branch" placeholder="main" value="main" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel" id="extensions-settings">
+                            <h2>Extensions Settings</h2>
+                            <div class="setting-group">
+                                <h3>Extension Management</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="auto-update-extensions" checked />
+                                        <span>Auto-update extensions</span>
+                                    </label>
+                                    <p class="setting-description">Automatically update extensions when available</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="extension-recommendations" checked />
+                                        <span>Show extension recommendations</span>
+                                    </label>
+                                    <p class="setting-description">Display recommended extensions based on project type</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="extension-update-check">Update Check Interval</label>
+                                    <p class="setting-description">How often to check for extension updates</p>
+                                    <select id="extension-update-check">
+                                        <option value="hourly">Every Hour</option>
+                                        <option value="daily" selected>Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="never">Never</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel" id="advanced-settings">
+                            <h2>Advanced Settings</h2>
+                            <div class="setting-group">
+                                <h3>Performance</h3>
+                                <div class="setting-item">
+                                    <label for="max-workers">Maximum Worker Threads</label>
+                                    <p class="setting-description">Number of background workers for file operations</p>
+                                    <input type="number" id="max-workers" min="1" max="16" value="4" />
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="hardware-acceleration" checked />
+                                        <span>Enable hardware acceleration</span>
+                                    </label>
+                                    <p class="setting-description">Use GPU for rendering (requires restart)</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="cache-size">Cache Size (MB)</label>
+                                    <p class="setting-description">Maximum cache size for thumbnails and previews</p>
+                                    <input type="number" id="cache-size" min="50" max="1000" step="50" value="200" />
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Developer Options</h3>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="dev-tools" />
+                                        <span>Enable Developer Tools</span>
+                                    </label>
+                                    <p class="setting-description">Show DevTools menu and shortcuts</p>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="verbose-logging" />
+                                        <span>Enable verbose logging</span>
+                                    </label>
+                                    <p class="setting-description">Log detailed debug information to console</p>
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <h3>Data & Privacy</h3>
+                                <div class="setting-item">
+                                    <button class="btn-secondary" id="clear-cache-btn">
+                                        <i class="fas fa-trash"></i> Clear Cache
+                                    </button>
+                                    <p class="setting-description">Remove all cached files and temporary data</p>
+                                </div>
+                                <div class="setting-item">
+                                    <button class="btn-secondary" id="reset-settings-btn">
+                                        <i class="fas fa-undo"></i> Reset to Defaults
+                                    </button>
+                                    <p class="setting-description">Restore all settings to factory defaults</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Project Modal -->
+    <div class="modal" id="new-project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Project</h2>
+                <button class="modal-close" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="project-name">Project Name</label>
+                    <input type="text" id="project-name" placeholder="Enter project name" />
+                </div>
+                <div class="form-group">
+                    <label for="project-type">Project Type</label>
+                    <select id="project-type">
+                        <option value="">Select a template</option>
+                        <optgroup label="✨ Advanced Templates (New!)">
+                            <option value="react-app">React Application (Modern)</option>
+                            <option value="node-api">Node.js Express API</option>
+                            <option value="python-app">Python Flask App</option>
+                        </optgroup>
+                        <optgroup label="Standard Templates">
+                            <option value="electron">Electron Application</option>
+                            <option value="python">Python Project</option>
+                            <option value="web">Web Project (HTML/CSS/JS)</option>
+                            <option value="nodejs">Node.js Application</option>
+                            <option value="react">React Application</option>
+                            <option value="vue">Vue.js Application</option>
+                            <option value="cpp">C++ Project</option>
+                            <option value="java">Java Project</option>
+                            <option value="empty">Empty Project</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="project-description">Description</label>
+                    <textarea id="project-description" rows="3" placeholder="Enter project description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="project-location">Location</label>
+                    <div class="input-group">
+                        <input type="text" id="project-location" placeholder="Select project location" readonly />
+                        <button class="btn-secondary" id="browse-location">
+                            <i class="fas fa-folder"></i> Browse
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="init-git" checked />
+                        <span>Initialize Git repository</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="open-vscode" checked />
+                        <span>Open in VS Code after creation</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-project">Cancel</button>
+                <button class="btn-primary" id="create-project-btn">
+                    <i class="fas fa-plus"></i> Create Project
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clone Repository Modal -->
+    <div class="modal" id="clone-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Clone Repository</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="repo-url">Repository URL</label>
+                    <input type="text" id="repo-url" placeholder="https://github.com/user/repo.git" />
+                </div>
+                <div class="form-group">
+                    <label for="clone-location">Clone to</label>
+                    <div class="input-group">
+                        <input type="text" id="clone-location" placeholder="Select location" />
+                        <button class="btn-secondary" id="browse-clone-location">
+                            <i class="fas fa-folder"></i> Browse
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="open-after-clone" checked />
+                        <span>Open in VS Code after cloning</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="clone-btn">
+                    <i class="fab fa-git-alt"></i> Clone Repository
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="modal" id="search-modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Search Projects</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" id="search-input" placeholder="Type to search..." autofocus />
+                </div>
+                <div class="search-results" id="search-results">
+                    <!-- Search results will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Git Commit Modal -->
+    <div class="modal" id="git-commit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Commit Changes</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="commit-message">Commit Message</label>
+                    <textarea id="commit-message" rows="4" placeholder="Enter commit message"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Changed Files</label>
+                    <div class="changed-files" id="changed-files-list">
+                        <!-- Changed files will be listed here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="confirm-commit-btn">
+                    <i class="fas fa-check"></i> Commit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Upload Modal -->
+    <div class="modal" id="github-upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fab fa-github"></i> Upload to GitHub</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="github-repo-name">Repository Name</label>
+                    <input type="text" id="github-repo-name" placeholder="my-awesome-project" />
+                </div>
+                <div class="form-group">
+                    <label for="github-repo-description">Description (optional)</label>
+                    <textarea id="github-repo-description" rows="2" placeholder="A brief description of your project"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Visibility</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="github-visibility" value="public" checked />
+                            <div class="radio-content">
+                                <i class="fas fa-globe"></i>
+                                <div>
+                                    <strong>Public</strong>
+                                    <p>Anyone can see this repository</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="github-visibility" value="private" />
+                            <div class="radio-content">
+                                <i class="fas fa-lock"></i>
+                                <div>
+                                    <strong>Private</strong>
+                                    <p>You choose who can see this repository</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="github-add-readme" />
+                        <span>Add README.md</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="github-add-gitignore" />
+                        <span>Add .gitignore</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="github-add-license" />
+                        <span>Add License</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="confirm-github-upload-btn">
+                    <i class="fab fa-github"></i> Create & Upload
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Auth Modal -->
+    <div class="modal" id="github-auth-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fab fa-github"></i> Connect GitHub Account</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="github-auth-info">
+                    <i class="fab fa-github"></i>
+                    <p>Connect your GitHub account to enable advanced features:</p>
+                    <ul>
+                        <li>Create repositories directly from the app</li>
+                        <li>Upload projects to GitHub</li>
+                        <li>Create pull requests</li>
+                        <li>Manage issues</li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label for="github-token">Personal Access Token</label>
+                    <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+                    <small>Generate a token at <a href="#" id="github-token-link">github.com/settings/tokens</a></small>
+                </div>
+                <div class="github-token-help">
+                    <p><strong>Required scopes:</strong> repo, workflow, write:packages</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="confirm-github-auth-btn">
+                    <i class="fas fa-link"></i> Connect Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Git Rebase Modal -->
+    <div class="modal" id="git-rebase-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-diagram-project"></i> Rebase Branch</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="rebase-branch-select">Rebase current branch onto:</label>
+                    <select id="rebase-branch-select" class="select-input">
+                        <option value="">Select a branch...</option>
+                    </select>
+                </div>
+                <div class="warning-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Rebasing rewrites commit history. Only rebase commits that haven't been pushed to a shared repository.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="confirm-rebase-btn">
+                    <i class="fas fa-diagram-project"></i> Rebase
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Git Cherry Pick Modal -->
+    <div class="modal" id="git-cherry-pick-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-hand-pointer"></i> Cherry Pick Commit</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="cherry-pick-commit">Commit Hash</label>
+                    <input type="text" id="cherry-pick-commit" placeholder="e.g., a1b2c3d" />
+                    <small>Enter the hash of the commit you want to apply</small>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="cherry-pick-no-commit" />
+                        <span>Don't auto-commit (--no-commit)</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="confirm-cherry-pick-btn">
+                    <i class="fas fa-hand-pointer"></i> Cherry Pick
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Git Tags Modal -->
+    <div class="modal" id="git-tags-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-tag"></i> Manage Tags</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tags-header">
+                    <button class="btn-primary" id="create-tag-btn">
+                        <i class="fas fa-plus"></i> Create Tag
+                    </button>
+                </div>
+                <div class="tags-list" id="git-tags-list">
+                    <div class="tags-empty">
+                        <i class="fas fa-tag"></i>
+                        <p>No tags found</p>
+                    </div>
+                </div>
+                <div class="create-tag-form" id="create-tag-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="new-tag-name">Tag Name</label>
+                        <input type="text" id="new-tag-name" placeholder="v1.0.0" />
+                    </div>
+                    <div class="form-group">
+                        <label for="new-tag-message">Message (optional)</label>
+                        <textarea id="new-tag-message" rows="2" placeholder="Release version 1.0.0"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="tag-push-remote" />
+                            <span>Push to remote</span>
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-secondary" id="cancel-tag-btn">Cancel</button>
+                        <button class="btn-primary" id="confirm-tag-btn">
+                            <i class="fas fa-check"></i> Create Tag
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Git Reset Modal -->
+    <div class="modal" id="git-reset-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-rotate-left"></i> Reset Branch</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="reset-target">Reset to:</label>
+                    <input type="text" id="reset-target" placeholder="HEAD~1, commit hash, or branch name" />
+                </div>
+                <div class="form-group">
+                    <label>Reset Mode:</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="reset-mode" value="soft" />
+                            <div class="radio-content">
+                                <strong>Soft</strong>
+                                <p>Keep changes staged</p>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="reset-mode" value="mixed" checked />
+                            <div class="radio-content">
+                                <strong>Mixed</strong>
+                                <p>Keep changes unstaged</p>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="reset-mode" value="hard" />
+                            <div class="radio-content">
+                                <strong>Hard</strong>
+                                <p>Discard all changes</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>Warning:</strong> Hard reset will permanently discard changes. This cannot be undone.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close">Cancel</button>
+                <button class="btn-primary" id="confirm-reset-btn">
+                    <i class="fas fa-rotate-left"></i> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette Modal -->
+    <div class="modal" id="command-palette-modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <input type="text" id="command-palette-input" placeholder="Type a command..." autofocus />
+            </div>
+            <div class="modal-body command-palette-body">
+                <div class="command-list" id="command-list">
+                    <div class="command-item" data-command="new-project">
+                        <i class="fas fa-folder-plus"></i>
+                        <span>New Project</span>
+                        <span class="command-shortcut">Ctrl+N</span>
+                    </div>
+                    <div class="command-item" data-command="open-project">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Open Project</span>
+                        <span class="command-shortcut">Ctrl+O</span>
+                    </div>
+                    <div class="command-item" data-command="search-projects">
+                        <i class="fas fa-search"></i>
+                        <span>Search Projects</span>
+                        <span class="command-shortcut">Ctrl+F</span>
+                    </div>
+                    <div class="command-item" data-command="open-terminal">
+                        <i class="fas fa-terminal"></i>
+                        <span>Open Terminal</span>
+                        <span class="command-shortcut">Ctrl+`</span>
+                    </div>
+                    <div class="command-item" data-command="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                        <span>Toggle Sidebar</span>
+                        <span class="command-shortcut">Ctrl+B</span>
+                    </div>
+                    <div class="command-item" data-command="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Open Settings</span>
+                        <span class="command-shortcut">Ctrl+,</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal" id="shortcuts-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Keyboard Shortcuts</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body shortcuts-body">
+                <div class="shortcuts-section">
+                    <h3>General</h3>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+N</span>
+                        <span class="shortcut-desc">New Project</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+O</span>
+                        <span class="shortcut-desc">Open Project</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+S</span>
+                        <span class="shortcut-desc">Save Workspace</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+,</span>
+                        <span class="shortcut-desc">Open Settings</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Alt+F4</span>
+                        <span class="shortcut-desc">Exit Application</span>
+                    </div>
+                </div>
+                <div class="shortcuts-section">
+                    <h3>View</h3>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+B</span>
+                        <span class="shortcut-desc">Toggle Sidebar</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl++</span>
+                        <span class="shortcut-desc">Zoom In</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+-</span>
+                        <span class="shortcut-desc">Zoom Out</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">F11</span>
+                        <span class="shortcut-desc">Toggle Fullscreen</span>
+                    </div>
+                </div>
+                <div class="shortcuts-section">
+                    <h3>Tools</h3>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+`</span>
+                        <span class="shortcut-desc">Open Terminal</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+Shift+P</span>
+                        <span class="shortcut-desc">Command Palette</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">F5</span>
+                        <span class="shortcut-desc">Run Project</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Project Modal - Premium Design -->
+    <div class="modal" id="delete-project-modal">
+        <div class="modal-content modal-delete-premium">
+            <!-- Animated Background -->
+            <div class="delete-bg-animation"></div>
+
+            <!-- Close Button -->
+            <button class="modal-close delete-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-body delete-premium-body">
+                <!-- Delete Icon with Animation -->
+                <div class="delete-icon-container">
+                    <div class="delete-icon-circle">
+                        <div class="delete-icon-inner">
+                            <img src="assets/delete.png" alt="Delete" class="delete-icon-image" />
+                        </div>
+                    </div>
+                    <div class="delete-icon-pulse"></div>
+                </div>
+
+                <!-- Project Info -->
+                <div class="delete-project-header">
+                    <h2 class="delete-title">Delete Project</h2>
+                    <div class="delete-project-info-premium">
+                        <div class="delete-project-name-premium" id="delete-project-name">Project Name</div>
+                        <div class="delete-project-path-premium" id="delete-project-path">C:\path\to\project</div>
+                    </div>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="delete-warning-premium">
+                    <div class="warning-icon-wrapper">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <p>This action requires confirmation. Choose how you want to proceed:</p>
+                </div>
+
+                <!-- Delete Options with Glassmorphism -->
+                <div class="delete-options-premium">
+                    <label class="delete-option-premium">
+                        <input type="radio" name="delete-type" value="remove" checked />
+                        <div class="delete-option-glass">
+                            <div class="option-icon-wrapper safe">
+                                <i class="fas fa-unlink"></i>
+                            </div>
+                            <div class="option-text-wrapper">
+                                <div class="option-title-premium">Remove from App</div>
+                                <div class="option-desc-premium">Keep files on disk, remove from list</div>
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="delete-option-premium danger">
+                        <input type="radio" name="delete-type" value="delete" />
+                        <div class="delete-option-glass">
+                            <div class="option-icon-wrapper danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <div class="option-text-wrapper">
+                                <div class="option-title-premium">Delete Permanently</div>
+                                <div class="option-desc-premium">Delete all files from disk forever</div>
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Confirmation Section -->
+                <div class="delete-confirmation-premium" id="delete-confirmation-section" style="display: none;">
+                    <div class="confirmation-alert">
+                        <div class="alert-icon">
+                            <i class="fas fa-shield-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <div class="alert-title">Security Confirmation</div>
+                            <div class="alert-text">Type <span class="highlight-text" id="delete-confirm-name">project name</span> to confirm permanent deletion</div>
+                        </div>
+                    </div>
+                    <div class="confirmation-input-wrapper">
+                        <input type="text" id="delete-confirm-input" placeholder="Enter project name..." class="confirm-input-premium" />
+                        <div class="input-underline"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="delete-actions-premium">
+                    <button class="btn-cancel-premium modal-close">
+                        <span>Cancel</span>
+                    </button>
+                    <button class="btn-delete-premium" id="confirm-delete-btn" disabled>
+                        <span class="btn-delete-icon">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                        <span class="btn-delete-text" id="delete-btn-text">Remove from App</span>
+                        <span class="btn-delete-shine"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Login Modal - Premium Design -->
+    <!-- GitHub Login Modal -->
+    <div class="modal" id="github-login-modal">
+        <div class="modal-content modal-github-premium">
+            <!-- Animated Background -->
+            <div class="github-bg-gradient"></div>
+            <div class="github-particles" id="github-particles"></div>
+
+            <button class="modal-close github-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-body github-premium-body">
+                <!-- GitHub Icon with Advanced Animation -->
+                <div class="github-icon-container">
+                    <div class="github-icon-orbit"></div>
+                    <div class="github-icon-orbit github-icon-orbit-2"></div>
+                    <div class="github-icon-circle">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="github-icon-glow"></div>
+                </div>
+
+                <!-- Title with Gradient Text -->
+                <div class="github-header">
+                    <h2 class="github-title">
+                        <span class="title-gradient">Connect to GitHub</span>
+                    </h2>
+                    <p class="github-subtitle">Unlock powerful collaboration features and sync your repositories</p>
+                </div>
+
+                <!-- Token Input with Enhanced Design -->
+                <div class="github-form">
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">
+                            <i class="fas fa-key"></i>
+                            Personal Access Token
+                        </label>
+                        <div class="input-wrapper-premium">
+                            <div class="input-decorator"></div>
+                            <input type="password" id="github-token-input" class="github-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+                            <button class="toggle-visibility" id="toggle-token-visibility" title="Toggle visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Need a token? <a href="#" id="github-token-help" class="github-link">Generate one on GitHub <i class="fas fa-external-link-alt"></i></a></span>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Features Grid -->
+                    <div class="github-features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h4>Auto Sync</h4>
+                            <p>Repositories sync automatically</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <h4>PR & Commits</h4>
+                            <p>View and manage pull requests</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h4>Issue Tracking</h4>
+                            <p>Manage issues and projects</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4>Team Collaboration</h4>
+                            <p>Work seamlessly with your team</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons with Enhanced Design -->
+                    <div class="github-actions">
+                        <button class="btn-cancel-premium modal-close">
+                            <span>Cancel</span>
+                        </button>
+                        <button class="btn-github-connect" id="github-connect-btn">
+                            <span class="btn-icon">
+                                <i class="fab fa-github"></i>
+                            </span>
+                            <span class="btn-text">Connect Account</span>
+                            <span class="btn-shine"></span>
+                            <span class="btn-sparkle"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Account Dashboard Modal -->
+    <div class="modal" id="github-account-modal">
+        <div class="modal-content modal-github-dashboard">
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="github-dashboard">
+                <!-- Header Section -->
+                <div class="github-dashboard-header">
+                    <div class="github-profile-section">
+                        <div class="github-avatar-large" id="github-avatar-large">
+                            <img src="" alt="GitHub Avatar" />
+                            <div class="avatar-status-badge">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div class="github-profile-info">
+                            <h2 class="github-username" id="github-username-display">Username</h2>
+                            <p class="github-name" id="github-name-display">Full Name</p>
+                            <div class="github-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-code-branch"></i>
+                                    <span id="github-repos-count">0</span>
+                                    <span class="stat-label">Repositories</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    <span id="github-followers-count">0</span>
+                                    <span class="stat-label">Followers</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-star"></i>
+                                    <span id="github-stars-count">0</span>
+                                    <span class="stat-label">Stars</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="github-quick-actions">
+                    <button class="github-action-btn" id="view-profile-btn">
+                        <i class="fab fa-github"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="github-action-btn" id="sync-repos-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Sync Repositories</span>
+                    </button>
+                    <button class="github-action-btn" id="refresh-data-btn">
+                        <i class="fas fa-redo"></i>
+                        <span>Refresh Data</span>
+                    </button>
+                </div>
+
+                <!-- Account Details -->
+                <div class="github-account-details">
+                    <h3>Account Information</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value" id="github-email-display">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Company</span>
+                            <span class="detail-value" id="github-company-display">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value" id="github-location-display">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Member Since</span>
+                            <span class="detail-value" id="github-created-display">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio Section -->
+                <div class="github-bio-section" id="github-bio-section" style="display: none;">
+                    <h3>Bio</h3>
+                    <p id="github-bio-text"></p>
+                </div>
+
+                <!-- Disconnect Button -->
+                <div class="github-dashboard-footer">
+                    <button class="btn-disconnect" id="github-disconnect-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Disconnect Account</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content modal-about">
+            <div class="modal-header">
+                <h2>About Project Manager Pro</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body about-body">
+                <div class="about-hero">
+                    <div class="about-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h1 class="about-title">Project Manager Pro</h1>
+                    <p class="about-version">Version 1.0.0</p>
+                    <p class="about-tagline">Professional Git & Project Management</p>
+                </div>
+
+                <div class="about-features">
+                    <div class="features-grid-compact">
+                        <div class="feature-item-compact">
+                            <i class="fas fa-folder-tree"></i>
+                            <span>Multi-Project</span>
+                        </div>
+                        <div class="feature-item-compact">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git Integration</span>
+                        </div>
+                        <div class="feature-item-compact">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Sync</span>
+                        </div>
+                        <div class="feature-item-compact">
+                            <i class="fas fa-code-branch"></i>
+                            <span>Branches</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-system-info">
+                    <h3>System Information</h3>
+                    <div class="system-info-grid">
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-bolt"></i> Electron</span>
+                            <span class="info-value" id="electron-version">Loading...</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fab fa-node-js"></i> Node.js</span>
+                            <span class="info-value" id="node-version">Loading...</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-desktop"></i> Platform</span>
+                            <span class="info-value" id="platform-info">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-links">
+                    <button class="btn-link-modern" id="open-github">
+                        <i class="fab fa-github"></i>
+                        <div>
+                            <span class="link-title">GitHub Repository</span>
+                            <span class="link-subtitle">View source code</span>
+                        </div>
+                    </button>
+                    <button class="btn-link-modern" id="check-updates">
+                        <i class="fas fa-download"></i>
+                        <div>
+                            <span class="link-title">Check for Updates</span>
+                            <span class="link-subtitle">Stay up to date</span>
+                        </div>
+                    </button>
+                    <button class="btn-link-modern" id="open-docs">
+                        <i class="fas fa-book"></i>
+                        <div>
+                            <span class="link-title">Documentation</span>
+                            <span class="link-subtitle">Learn more</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="about-footer">
+                    <p class="about-developer">Developed by <strong>Robin Doak</strong></p>
+                    <p class="about-copyright">&copy; 2025 Project Manager Pro. All rights reserved.</p>
+                    <p class="about-love">Made with <i class="fas fa-heart"></i> for developers worldwide</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="status-item">
+                <i class="fas fa-folder"></i>
+                <span id="workspace-path">~/Projects</span>
+            </span>
+        </div>
+        <div class="status-center">
+            <span class="status-item" id="status-message">Ready</span>
+        </div>
+        <div class="status-right">
+            <span class="status-item">
+                <i class="fas fa-code-branch"></i> main
+            </span>
+            <span class="status-item">
+                <i class="fas fa-check-circle"></i> Connected
+            </span>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Project created successfully!</span>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

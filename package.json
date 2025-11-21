@@ -1,0 +1,51 @@
+{
+  "name": "project-manager-pro",
+  "version": "1.0.0",
+  "description": "Professional Project Manager with VSCode-like interface",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build-win": "electron-builder --win",
+    "dist": "electron-builder",
+    "run-dist": "npm run dist"
+  },
+  "author": "Project Manager Pro",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.projectmanager.pro",
+    "productName": "Project Manager Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": "assets/delete.png",
+        "to": "assets/delete.png"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
+    "chokidar": "^3.5.3",
+    "diff": "^5.1.0",
+    "vis-network": "^9.1.6"
+  },
+  "optionalDependencies": {
+    "node-pty": "^1.0.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
+  }
+}
