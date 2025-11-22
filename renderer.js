@@ -32,6 +32,7 @@ async function initializeApp() {
     initializeProjectsView();
     initializeRecentView();
     initializeDeleteProjectModal();
+    initializePremiumScrollEffects();
 
     // Initialize Git modals
     createMergeModal();
@@ -5443,19 +5444,49 @@ function renderNavigationDots() {
     const navContainer = document.getElementById('tips-navigation');
     if (!navContainer || tipsPages.length === 0) return;
 
-    navContainer.innerHTML = tipsPages.map((_, index) => `
-        <button class="tip-dot ${index === currentTipsPage ? 'active' : ''}"
-                data-page="${index}"
-                aria-label="View tips page ${index + 1}"></button>
-    `).join('');
+    // Check if dots already exist
+    const existingDots = navContainer.querySelectorAll('.tip-dot');
 
-    // Add click handlers
-    navContainer.querySelectorAll('.tip-dot').forEach(dot => {
-        dot.addEventListener('click', () => {
-            const page = parseInt(dot.getAttribute('data-page'));
-            goToTipsPage(page);
+    if (existingDots.length === 0) {
+        // Initial render
+        navContainer.innerHTML = tipsPages.map((_, index) => `
+            <button class="tip-dot ${index === currentTipsPage ? 'active' : ''}"
+                    data-page="${index}"
+                    aria-label="View tips page ${index + 1}"></button>
+        `).join('');
+
+        // Add click handlers
+        navContainer.querySelectorAll('.tip-dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                const page = parseInt(dot.getAttribute('data-page'));
+                goToTipsPage(page);
+            });
         });
-    });
+    } else {
+        // Update existing dots with smooth transition
+        const previousActiveDot = navContainer.querySelector('.tip-dot.active');
+
+        existingDots.forEach((dot, index) => {
+            if (index === currentTipsPage) {
+                // Add morphing class for smooth transition
+                if (previousActiveDot && previousActiveDot !== dot) {
+                    dot.classList.add('morphing-in');
+                    previousActiveDot.classList.add('morphing-out');
+
+                    // Clean up morphing classes after transition
+                    setTimeout(() => {
+                        dot.classList.remove('morphing-in');
+                        if (previousActiveDot) {
+                            previousActiveDot.classList.remove('morphing-out');
+                        }
+                    }, 600);
+                }
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active', 'animating');
+            }
+        });
+    }
 
     // Start progress animation on active dot
     setTimeout(() => {
@@ -5555,6 +5586,14 @@ function startTipsRotation() {
         clearInterval(tipsRotationInterval);
     }
     startAutoRotation();
+}
+
+// ============================================
+// PREMIUM SCROLL EFFECTS
+// ============================================
+
+function initializePremiumScrollEffects() {
+    // All scroll effects removed for basic scrolling experience
 }
 
 // Initialize tips after a short delay

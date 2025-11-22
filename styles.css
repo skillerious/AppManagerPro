@@ -56,7 +56,10 @@ body {
 .titlebar {
     height: var(--titlebar-height);
     background: var(--bg-tertiary);
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
 }
 
@@ -243,6 +246,7 @@ body {
     overflow: hidden;
     position: relative;
     z-index: 1;
+    margin-top: var(--titlebar-height);
 }
 
 /* Sidebar */
@@ -341,8 +345,9 @@ body {
 .content-area {
     flex: 1;
     background: var(--bg-primary);
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
+    isolation: isolate;
 }
 
 /* Views */
@@ -352,6 +357,9 @@ body {
     animation: fadeIn 0.3s ease;
     height: 100%;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable both-edges;
 }
 
 .view.active {
@@ -859,23 +867,55 @@ body {
     font-size: 16px;
 }
 
-/* Scrollbar */
+/* Premium Scrollbar - Ultra Smooth */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: linear-gradient(90deg, rgba(30, 30, 30, 0.3) 0%, rgba(30, 30, 30, 0.5) 100%);
+    border-left: 1px solid rgba(0, 122, 204, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #424242;
-    border-radius: 0;
+    background: linear-gradient(180deg,
+        rgba(0, 122, 204, 0.7) 0%,
+        rgba(0, 152, 255, 0.6) 50%,
+        rgba(0, 122, 204, 0.7) 100%);
+    border-radius: 12px;
+    border: 3px solid rgba(30, 30, 30, 0.6);
+    background-clip: padding-box;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 0 8px rgba(0, 122, 204, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4e4e4e;
+    background: linear-gradient(180deg,
+        rgba(0, 152, 255, 0.9) 0%,
+        rgba(0, 122, 204, 0.8) 50%,
+        rgba(0, 152, 255, 0.9) 100%);
+    background-clip: padding-box;
+    border-color: rgba(30, 30, 30, 0.4);
+    box-shadow:
+        0 0 16px rgba(0, 152, 255, 0.6),
+        0 0 8px rgba(0, 122, 204, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg,
+        var(--accent-secondary) 0%,
+        var(--accent-primary) 50%,
+        var(--accent-secondary) 100%);
+    background-clip: padding-box;
+    box-shadow:
+        0 0 20px rgba(0, 152, 255, 0.8),
+        0 0 10px rgba(0, 122, 204, 0.6),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 /* Loading Spinner */
@@ -6390,6 +6430,9 @@ select {
     margin-bottom: 40px;
     position: relative;
     overflow: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: transform 0.1s linear;
 }
 
 .dashboard-hero::before {
@@ -6544,9 +6587,11 @@ select {
     }
 }
 
-/* Dashboard Sections */
+/* Dashboard Sections - visible by default for better UX */
 .dashboard-section {
     margin-bottom: 48px;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section-header {
@@ -7025,14 +7070,16 @@ select {
     border-radius: 50%;
     background: var(--border-color);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
     border: none;
     padding: 0;
+    will-change: width, border-radius, background, transform;
+    transform: translateZ(0);
 }
 
 .tip-dot:hover {
     background: var(--text-secondary);
-    transform: scale(1.3);
+    transform: scale(1.3) translateZ(0);
 }
 
 .tip-dot.active {
@@ -7042,6 +7089,7 @@ select {
     border: 1px solid var(--accent-primary);
     position: relative;
     overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .tip-dot.active::before {
@@ -7053,6 +7101,10 @@ select {
     width: 100%;
     background: var(--accent-primary);
     border-radius: 1px;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+    transform: scaleX(1) translateZ(0);
+    transform-origin: left center;
 }
 
 .tip-dot.active.animating::before {
@@ -7060,16 +7112,91 @@ select {
 }
 
 @keyframes progressDrain {
-    from {
-        width: 100%;
-    }
-    to {
-        width: 0%;
-    }
+    0% { transform: scaleX(1) translateZ(0); }
+    1% { transform: scaleX(0.99) translateZ(0); }
+    2% { transform: scaleX(0.98) translateZ(0); }
+    3% { transform: scaleX(0.97) translateZ(0); }
+    4% { transform: scaleX(0.96) translateZ(0); }
+    5% { transform: scaleX(0.95) translateZ(0); }
+    10% { transform: scaleX(0.9) translateZ(0); }
+    15% { transform: scaleX(0.85) translateZ(0); }
+    20% { transform: scaleX(0.8) translateZ(0); }
+    25% { transform: scaleX(0.75) translateZ(0); }
+    30% { transform: scaleX(0.7) translateZ(0); }
+    35% { transform: scaleX(0.65) translateZ(0); }
+    40% { transform: scaleX(0.6) translateZ(0); }
+    45% { transform: scaleX(0.55) translateZ(0); }
+    50% { transform: scaleX(0.5) translateZ(0); }
+    55% { transform: scaleX(0.45) translateZ(0); }
+    60% { transform: scaleX(0.4) translateZ(0); }
+    65% { transform: scaleX(0.35) translateZ(0); }
+    70% { transform: scaleX(0.3) translateZ(0); }
+    75% { transform: scaleX(0.25) translateZ(0); }
+    80% { transform: scaleX(0.2) translateZ(0); }
+    85% { transform: scaleX(0.15) translateZ(0); }
+    90% { transform: scaleX(0.1) translateZ(0); }
+    95% { transform: scaleX(0.05) translateZ(0); }
+    98% { transform: scaleX(0.02) translateZ(0); }
+    99% { transform: scaleX(0.01) translateZ(0); }
+    100% { transform: scaleX(0) translateZ(0); }
 }
 
 .tip-dot.active:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) translateZ(0);
+}
+
+/* Morphing animations for smooth dot transitions */
+.tip-dot.morphing-out {
+    animation: morphOut 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}
+
+.tip-dot.morphing-in {
+    animation: morphIn 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}
+
+@keyframes morphOut {
+    0% {
+        width: 24px;
+        border-radius: 2px;
+        background: transparent;
+        border: 1px solid var(--accent-primary);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.8) translateZ(0);
+        opacity: 0.7;
+    }
+    100% {
+        width: 8px;
+        border-radius: 50%;
+        background: var(--border-color);
+        border: none;
+        transform: scale(1) translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes morphIn {
+    0% {
+        width: 8px;
+        border-radius: 50%;
+        background: var(--border-color);
+        border: none;
+        transform: scale(0.8) translateZ(0);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.15) translateZ(0);
+        opacity: 0.85;
+    }
+    100% {
+        width: 24px;
+        border-radius: 2px;
+        background: transparent;
+        border: 1px solid var(--accent-primary);
+        transform: scale(1) translateZ(0);
+        opacity: 1;
+    }
 }
 
 .tip-icon {
